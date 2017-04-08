@@ -1,7 +1,7 @@
 #
 # Apache License 2.0
 #
-from collections import namedtuple
+import os
 
 
 class Base(object):
@@ -13,20 +13,22 @@ class Base(object):
         pass
 
     def __repr__(self):
-        print(self.name, self.path)
+        return os.path.join(self.path, self.name)
 
     def __str__(self):
-        print(self.name, self.path)
+        return os.path.join(self.path, self.name)
 
 
-class File(base):
+class File(Base):
 
     def __init__(self, *args, **kwargs):
         super(File, self).__init__(*args, **kwargs)
-        self.stat = Stat()
+        self.stat = kwargs.get('stat')
+        self.name = self.stat.name
+        self.path = self.stat.path
 
     def component_function(self):
-        print "some function"
+        print("some function")
 
 
 class Directory(Base):
