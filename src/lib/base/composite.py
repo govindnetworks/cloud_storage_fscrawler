@@ -2,6 +2,10 @@
 # Apache License 2.0
 #
 import os
+from collections import namedtuple
+from multiprocessing import Process
+
+Stat = namedtuple('stat', ['name', 'mode', 'path', 'uid', 'gid', 'size', 'atime', 'mtime', 'ctime'])
 
 
 class Base(object):
@@ -19,39 +23,44 @@ class Base(object):
         return os.path.join(self.path, self.name)
 
 
-class File(Base):
+class File(Process):
 
     def __init__(self, *args, **kwargs):
-        super(File, self).__init__(*args, **kwargs)
+        super(File, self).__init__()
         self.stat = kwargs.get('stat')
-        self.name = self.stat.name
-        self.path = self.stat.path
+        # print(self.stat.stat())
 
-    def component_function(self):
-        print("some function")
+    def run(self):
+        #st = self.stat.stat()
+        # st_val = Stat(self.stat.name, st.st_mode, self.stat.path, st.st_uid, st.st_gid, st.st_size,
+        #              st.st_atime, st.st_mtime, st.st_ctime)
+        pass
+        return
 
 
-class Directory(Base):
-    directory_count = 0
+class Directory(object):
+    pass
+# class Directory(Base):
+#     directory_count = 0
 
-    def __init__(self, *args, **kwargs):
-        super(Directory, self).__init__(self, *args, **kwargs)
-        self.children = []
-        self.stat = Stat()
+#     def __init__(self, *args, **kwargs):
+#         super(Directory, self).__init__(self, *args, **kwargs)
+#         self.children = []
+#         self.stat = Stat()
 
-    def update_stat(self, stat):
-        self.stat = stat
+#     def update_stat(self, stat):
+#         self.stat = stat
 
-    def append_child(self, child, directory=False):
-        self.children.append(child)
-        if directory:
-            directory_count = directory_count + 1
+#     def append_child(self, child, directory=False):
+#         self.children.append(child)
+#         if directory:
+#             directory_count = directory_count + 1
 
-    def remove_child(self, child):
-        self.children.remove(child)
+#     def remove_child(self, child):
+#         self.children.remove(child)
 
-    def component_function(self):
-        self.meta_info = Stat()
+#     def component_function(self):
+#         self.meta_info = Stat()
 
 
 if __name__ == '__main__':
